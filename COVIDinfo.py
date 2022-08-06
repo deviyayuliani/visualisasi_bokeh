@@ -31,23 +31,7 @@ table_columns = [TableColumn(field='island', title='Island'),
 table = DataTable(source=src, columns=table_columns, width=1000)
 tab1 = Panel(child=table, title='Population Summary')
 
-
-# Tab 2: summary tabel terkonfirmasi
-
-stats = df_province.groupby('island')['confirmed'].describe()
-stats = stats.reset_index()
-
-src = ColumnDataSource(stats)
-
-table_columns = [TableColumn(field='island', title='Pulau'),
-                 TableColumn(field='min', title='Terkonfirmasi Minimum'),
-                 TableColumn(field='mean', title='Terkonfirmasi Rata-Rata'),
-                 TableColumn(field='max', title='Terkonfirmasi Maksimum')]
-
-table = DataTable(source=src, columns=table_columns)
-tab2 = Panel(child=table, title='Summary Kasus Positif Tiap Pulau')
-
-# Tab 3: line & bar plot jumlah kasus per hari
+# Tab 2: line & bar plot jumlah kasus per hari
 
 cases_cds = ColumnDataSource(df_cases)
 
@@ -108,29 +92,6 @@ tooltips = [('Total Kasus', '@acc_confirmed'),
             ('Jumlah tes baru', '@new_tested'),
             ('Dalam proses tes', '@being_checked')]
 
-acc_hover_glyph = fig_line.circle(x='date', y='acc_confirmed', source=cases_cds,
-                                  size=15, alpha=0,
-                                  hover_fill_color='black', hover_alpha=0.5)
-
-new_confirmed_hover_glyph = fig_line.circle(x='date', y='new_confirmed', source=cases_cds,
-                                            size=15, alpha=0,
-                                            hover_fill_color='black', hover_alpha=0.1)
-
-new_released_hover_glyph = fig_line.circle(x='date', y='new_released', source=cases_cds,
-                                           size=15, alpha=0,
-                                           hover_fill_color='black', hover_alpha=0.1)
-
-new_deceased_hover_glyph = fig_line.circle(x='date', y='new_deceased', source=cases_cds,
-                                          size=15, alpha=0,
-                                          hover_fill_color='black', hover_alpha=0.1)
-
-new_tested_hover_glyph = fig_line.circle(x='date', y='new_tested', source=cases_cds,
-                                         size=15, alpha=0,
-                                         hover_fill_color='black', hover_alpha=0.1)
-
-being_checked_hover_glyph = fig_line.circle(x='date', y='being_checked', source=cases_cds,
-                                            size=15, alpha=0,
-                                            hover_fill_color='black', hover_alpha=0.1)
 
 fig_line.add_tools(HoverTool(tooltips=tooltips, renderers=[new_confirmed_hover_glyph,
                                                            new_released_hover_glyph,
@@ -141,48 +102,11 @@ fig_line.add_tools(HoverTool(tooltips=tooltips, renderers=[new_confirmed_hover_g
 
 fig_line.legend.click_policy = 'hide'
 
-tab3 = Panel(child=fig_line, title='Plot Jumlah Kasus')
-
-
-# Tab 4: scatter plot antara banyak kasus dan kepadatan penduduk
-
-province_cds = ColumnDataSource(df_province)
-select_tools = ['wheel_zoom',
-                'box_select',
-                'lasso_select',
-                'poly_select',
-                'tap',
-                'reset']
-
-fig_scatter = figure(plot_height=600, plot_width=800,
-                     x_axis_label='Populasi per KM persegi',
-                     y_axis_label='Kasus terkonfirmasi',
-                     title='Perbandingan Kasus Positif terhadap Kepadatan Penduduk',
-                     toolbar_location='right',
-                     tools=select_tools)
-
-fig_scatter.square(x='population_kmsquare',
-                   y='confirmed',
-                   source=province_cds,
-                   color='#34EB6E',
-                   selection_color='#17CF7F',
-                   nonselection_color='lightgray',
-                   nonselection_alpha='0.3')
-
-tooltips = [('Provinsi', '@province_name'),
-           ('Pulau', '@island'),
-           ('Ibukota', '@capital_city'),
-           ('Kasus positif', '@confirmed'),
-           ('Meninggal', '@deceased'),
-           ('Sembuh', '@released')]
-
-fig_scatter.add_tools(HoverTool(tooltips=tooltips))
-
-tab4 = Panel(child=fig_scatter, title='Populasi Per KM Persegi & Kasus Terkonfirmasi')
+tab2 = Panel(child=fig_line, title='Plot Jumlah Kasus')
 
 
 # Menggabungkan semua tab yang sudah dibuat
 
-tabs = Tabs(tabs=[tab1, tab2, tab3, tab4])
+tabs = Tabs(tabs=[tab1, tab2])
 
 curdoc().add_root(tabs)
