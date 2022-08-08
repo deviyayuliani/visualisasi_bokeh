@@ -67,6 +67,19 @@ fig_line.vbar(x='date', top='new_deceased',
               legend_label='Meninggal harian',
               source=cases_cds)
 
+fig_line.vbar(x='date', top='new_tested',
+              width=0.8,
+              alpha=0.3,
+              fill_color='#FFD036',
+              legend_label='Tes harian',
+              source=cases_cds)
+
+fig_line.vbar(x='date', top='being_checked',
+              width=0.8,
+              alpha=0.3,
+              fill_color='#FC0339',
+              legend_label='Tes dalam proses',
+              source=cases_cds)
 
 fig_line.legend.location = 'top_left'
 
@@ -75,7 +88,9 @@ fig_line.xaxis.major_label_orientation = math.pi/3
 tooltips = [('Total Kasus', '@acc_confirmed'),
             ('Kasus baru', '@new_confirmed'),
             ('Sembuh', '@new_released'),
-            ('Meninggal', '@new_deceased')]
+            ('Meninggal', '@new_deceased'),
+            ('Jumlah tes baru', '@new_tested'),
+            ('Dalam proses tes', '@being_checked')]
 
 acc_hover_glyph = fig_line.circle(x='date', y='acc_confirmed', source=cases_cds,
                                   size=15, alpha=0,
@@ -93,10 +108,19 @@ new_deceased_hover_glyph = fig_line.circle(x='date', y='new_deceased', source=ca
                                           size=15, alpha=0,
                                           hover_fill_color='black', hover_alpha=0.1)
 
+new_tested_hover_glyph = fig_line.circle(x='date', y='new_tested', source=cases_cds,
+                                         size=15, alpha=0,
+                                         hover_fill_color='black', hover_alpha=0.1)
+
+being_checked_hover_glyph = fig_line.circle(x='date', y='being_checked', source=cases_cds,
+                                            size=15, alpha=0,
+                                            hover_fill_color='black', hover_alpha=0.1)
 
 fig_line.add_tools(HoverTool(tooltips=tooltips, renderers=[new_confirmed_hover_glyph,
                                                            new_released_hover_glyph,
-                                                           new_deceased_hover_glyph,                                                          
+                                                           new_deceased_hover_glyph,
+                                                           new_tested_hover_glyph,
+                                                           being_checked_hover_glyph,
                                                            acc_hover_glyph]))
 
 fig_line.legend.click_policy = 'hide'
@@ -104,8 +128,45 @@ fig_line.legend.click_policy = 'hide'
 tab2 = Panel(child=fig_line, title='Plot Jumlah Kasus')
 
 
+# Tab 3: scatter plot antara banyak kasus dan kepadatan penduduk
+
+province_cds = ColumnDataSource(df_province)
+select_tools = ['wheel_zoom',
+                'box_select',
+                'lasso_select',
+                'poly_select',
+                'tap',
+                'reset']
+
+fig_scatter = figure(plot_height=600, plot_width=800,
+                     x_axis_label='Populasi per KM persegi',
+                     y_axis_label='Kasus terkonfirmasi',
+                     title='Perbandingan Kasus Positif terhadap Kepadatan Penduduk',
+                     toolbar_location='right',
+                     tools=select_tools)
+
+fig_scatter.square(x='population_kmsquare',
+                   y='confirmed',
+                   source=province_cds,
+                   color='#34EB6E',
+                   selection_color='#17CF7F',
+                   nonselection_color='lightgray',
+                   nonselection_alpha='0.3')
+
+tooltips = [('Provinsi', '@province_name'),
+           ('Pulau', '@island'),
+           ('Ibukota', '@capital_city'),
+           ('Kasus positif', '@confirmed'),
+           ('Meninggal', '@deceased'),
+           ('Sembuh', '@released')]
+
+fig_scatter.add_tools(HoverTool(tooltips=tooltips))
+
+tab3 = Panel(child=fig_scatter, title='Populasi Per KM Persegi & Kasus Terkonfirmasi')
+
+
 # Menggabungkan semua tab yang sudah dibuat
 
-tabs = Tabs(tabs=[tab1, tab2])
+tabs = Tabs(tabs=[tab1, tab2, tab3])
 
 curdoc().add_root(tabs)
