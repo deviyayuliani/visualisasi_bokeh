@@ -12,6 +12,7 @@ df_province = pd.read_csv('./data/province.csv', index_col=0, encoding = "ISO-88
 df_cases = pd.read_csv('./data/cases.csv', encoding = "ISO-8859-1", engine='python')
 
 df_province['province_name'] = df_province['province_name'].str[1:]
+df_province = df_province[:-1]
 
 
 # Tab 1: summary tabel terkonfirmasi
