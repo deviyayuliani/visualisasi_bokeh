@@ -63,6 +63,7 @@ tooltips = [('Provinsi', '@province_name'),
            ('Meninggal', '@deceased'),
            ('Sembuh', '@released')]
 
+fig_scatter.add_tools(HoverTool(tooltips=tooltips))
 
 tab2 = Panel(child=fig_scatter, title='Populasi Per KM Persegi & Kasus Terkonfirmasi')
 
