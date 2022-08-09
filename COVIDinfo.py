@@ -52,7 +52,7 @@ fig_scatter.square(x='population_kmsquare',
                    y='confirmed',
                    source=province_cds,
                    color='#3477eb',
-                   selection_color='#178ccf',
+                   selection_color='#17cf57',
                    nonselection_color='lightgray',
                    nonselection_alpha='0.3')
 
