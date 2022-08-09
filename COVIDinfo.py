@@ -34,11 +34,8 @@ tab1 = Panel(child=table, title='Summary Kasus Positif Tiap Pulau')
 # Tab 2: scatter plot antara banyak kasus dan kepadatan penduduk
 
 province_cds = ColumnDataSource(df_province)
-select_tools = ['wheel_zoom',
+select_tools = ['pan',
                 'box_select',
-                'lasso_select',
-                'poly_select',
-                'tap',
                 'reset']
 
 fig_scatter = figure(plot_height=600, plot_width=800,
