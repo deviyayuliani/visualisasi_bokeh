@@ -2,6 +2,7 @@
 # Dataset yang digunakan adalah 'province.csv' dan 'cases.csv'
 
 import pandas as pd
+from bokeh.io import curdoc
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, HoverTool, Panel, TableColumn, DataTable, Tabs
 import math
