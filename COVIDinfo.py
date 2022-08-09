@@ -51,8 +51,8 @@ fig_scatter = figure(plot_height=600, plot_width=800,
 fig_scatter.square(x='population_kmsquare',
                    y='confirmed',
                    source=province_cds,
-                   color='#34EB6E',
-                   selection_color='#17CF7F',
+                   color='#3477eb',
+                   selection_color='#178ccf',
                    nonselection_color='lightgray',
                    nonselection_alpha='0.3')
 
@@ -66,21 +66,6 @@ tooltips = [('Provinsi', '@province_name'),
 fig_scatter.add_tools(HoverTool(tooltips=tooltips))
 
 tab2 = Panel(child=fig_scatter, title='Populasi Per KM Persegi & Kasus Terkonfirmasi')
-
-# Tab 3: line & bar plot jumlah kasus per hari
-
-#cases_cds = ColumnDataSource(df_cases)
-
-#fig_line = figure(plot_height=600, plot_width=800,
-                  #title='Jumlah Terkonfirmasi Positif Maret 2020',
-                  #x_axis_label='Tanggal', y_axis_label='Jumlah kasus',
-                  #x_range=df_cases.get('date'),
-                  #toolbar_location='right')
-
-#fig_line.line(x='date', y='acc_confirmed',
-              #line_color='black',
-              #legend_label='Kasus akumulasi',
-              #source=cases_cds)
 
 
 # Menggabungkan semua tab yang sudah dibuat
